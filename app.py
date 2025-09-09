@@ -61,9 +61,6 @@ if generate_clicked:
 
         # Load generated code if exists
         code_output = ""
-        if os.path.exists(APP_FILE):
-            with open(APP_FILE, "r", encoding = "utf-8") as f:
-                code_output += f"// App.jsx\n{f.read()}\n\n"
         
         if os.path.exists(COMPONENTS_DIR):
             for filename in os.listdir(COMPONENTS_DIR):
@@ -71,6 +68,10 @@ if generate_clicked:
                     fpath = os.path.join(COMPONENTS_DIR, filename)
                     with open(fpath, "r", encoding = "utf-8") as f:
                         code_output += f"// Component/{filename}\n{f.read()}\n\n"
+        
+        if os.path.exists(APP_FILE):
+            with open(APP_FILE, "r", encoding = "utf-8") as f:
+                code_output += f"// App.jsx\n{f.read()}\n\n"
 
         if code_output:
             code_placeholder.code(code_output, language = "javascript")
