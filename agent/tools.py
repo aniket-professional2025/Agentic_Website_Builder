@@ -60,7 +60,7 @@ def run_cmd(cmd: str, cwd: str = None, timeout: int = 30) -> Tuple[int, str, str
 
 # Function to initialize the project root directory
 def init_project_root():
-    PROJECT_ROOT.mkdir(parents = True, exist_ok = True)
+    PROJECT_ROOT.mkdir(parents=True, exist_ok=True)
 
     # Write a minimal package.json if it doesn't exist
     pkg_file = PROJECT_ROOT / "package.json"
@@ -69,20 +69,38 @@ def init_project_root():
                                 "name": "generated-app",
                                 "version": "1.0.0",
                                 "scripts": {
-                                            "dev": "vite",
-                                            "build": "vite build",
-                                            "preview": "vite preview"
-                                            },
-                                "dependencies": {
-                                            "react": "^18.2.0",
-                                            "react-dom": "^18.2.0"
+                                    "dev": "vite",
+                                    "build": "vite build",
+                                    "preview": "vite preview"
                                     },
+                                "dependencies": {
+                                    "react": "^18.2.0",
+                                    "react-dom": "^18.2.0"
+                                },
                                 "devDependencies": {
-                                            "vite": "^4.0.0",
-                                            "tailwindcss": "^3.3.0",
-                                            "autoprefixer": "^10.4.0",
-                                            "postcss": "^8.4.0"
-                                    }
+                                    "vite": "^4.0.0",
+                                    "tailwindcss": "^3.3.0",
+                                    "autoprefixer": "^10.4.0",
+                                    "postcss": "^8.4.0"
+                                }
                     }
-""", encoding = "utf-8")
+""", encoding="utf-8")
+    
+    # Write a minimal index.html if it doesn't exist
+    index_file = PROJECT_ROOT / "index.html"
+    if not index_file.exists():
+        index_file.write_text("""<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Vite + React App</title>
+  </head>
+  <body>
+    <div id="root"></div>
+    <script type="module" src="/src/App.jsx"></script>
+  </body>
+</html>
+""", encoding="utf-8")
+
     return str(PROJECT_ROOT)
