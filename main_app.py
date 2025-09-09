@@ -2,6 +2,7 @@
 import traceback
 import sys
 from agent.graph import agent
+from agent.tools import init_project_root
 
 # Define function to run the entire pipeline
 def run_pipeline(user_prompt: str, recursion_limit: int = 100):
@@ -12,6 +13,10 @@ def run_pipeline(user_prompt: str, recursion_limit: int = 100):
     logs = []
 
     try:
+        
+        # Initialize the project root directory and create package.json
+        init_project_root() 
+
         logs.append("Analysing prompt...")
         yield {"logs": logs.copy()}
 
