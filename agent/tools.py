@@ -65,31 +65,32 @@ def init_project_root():
     # Write a minimal package.json if it doesn't exist
     pkg_file = PROJECT_ROOT / "package.json"
     if not pkg_file.exists():
-        pkg_file.write_text("""{
-                                "name": "generated-app",
-                                "version": "1.0.0",
-                                "scripts": {
-                                    "dev": "vite",
-                                    "build": "vite build",
-                                    "preview": "vite preview"
-                                    },
-                                "dependencies": {
-                                    "react": "^18.2.0",
-                                    "react-dom": "^18.2.0"
-                                },
-                                "devDependencies": {
-                                    "vite": "^4.0.0",
-                                    "tailwindcss": "^3.3.0",
-                                    "autoprefixer": "^10.4.0",
-                                    "postcss": "^8.4.0"
-                                }
-                    }
-""", encoding="utf-8")
+        pkg_file.write_text("""
+        {
+        "name": "generated-app",
+        "version": "1.0.0",
+        "scripts": {
+            "dev": "vite",
+            "build": "vite build",
+            "preview": "vite preview"
+            },
+        "dependencies": {
+            "react": "^18.2.0",
+            "react-dom": "^18.2.0"
+        },
+        "devDependencies": {
+            "vite": "^4.0.0",
+            "tailwindcss": "^3.3.0",
+            "autoprefixer": "^10.4.0",
+            "postcss": "^8.4.0"
+        }
+        }""", encoding = "utf-8")
     
-    # Write a minimal index.html if it doesn't exist
+# Write a minimal index.html if it doesn't exist
     index_file = PROJECT_ROOT / "index.html"
     if not index_file.exists():
-        index_file.write_text("""<!DOCTYPE html>
+        index_file.write_text("""
+    <!DOCTYPE html>
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
@@ -98,9 +99,67 @@ def init_project_root():
   </head>
   <body>
     <div id="root"></div>
-    <script type="module" src="/src/App.jsx"></script>
+    <script type="module" src="/src/main.jsx"></script>
   </body>
 </html>
+""", encoding="utf-8")
+
+# Write a minimal tailwind.config.js if it doesn't exist
+    tailwind_config_file = PROJECT_ROOT / "tailwind.config.js"
+    if not tailwind_config_file.exists():
+        tailwind_config_file.write_text("""/** @type {import('tailwindcss').Config} */
+module.exports = {
+  content: [
+    "./index.html",
+    "./src/**/*.{js,jsx,ts,tsx}",
+  ],
+  theme: {
+    extend: {
+      colors: {
+        lightPurple: '#EAD8F0',
+      },
+    },
+  },
+  plugins: [],
+};
+""", encoding="utf-8")
+
+# Write a minimal postcss.config.js if it doesn't exist
+    postcss_config_file = PROJECT_ROOT / "postcss.config.js"
+    if not postcss_config_file.exists():
+        postcss_config_file.write_text("""module.exports = {
+  plugins: {
+    tailwindcss: {},
+    autoprefixer: {},
+  },
+};
+""", encoding="utf-8")
+
+# Creating index.css file inside the src directory if it doesn't exist
+    css_file = PROJECT_ROOT / "src" / "index.css"
+    css_file.parent.mkdir(parents=True, exist_ok=True)
+    if not css_file.exists():
+        css_file.write_text("""
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+""", encoding="utf-8")
+
+# Creating the main.jsx file if it doesn't exist
+    main_file = PROJECT_ROOT / "src" / "main.jsx"
+    main_file.parent.mkdir(parents=True, exist_ok=True)
+    if not main_file.exists():
+        main_file.write_text("""
+import React from 'react';
+import ReactDOM from 'react-dom/client';
+import App from './App.jsx';
+import './index.css';
+
+ReactDOM.createRoot(document.getElementById('root')).render(
+    <React.StrictMode>
+        <App />
+    </React.StrictMode>,
+    );
 """, encoding="utf-8")
 
     return str(PROJECT_ROOT)
